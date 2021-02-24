@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.note_item.view.*
 import pl.marek.core.domain.Note
 
-class Adapter(private val noteList: List<Note>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val noteList: List<Note>?) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val noteView = LayoutInflater.from(parent.context)
@@ -17,16 +17,22 @@ class Adapter(private val noteList: List<Note>) : RecyclerView.Adapter<Adapter.V
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = noteList[position]
+        val currentItem = noteList?.get(position)
 
-        holder.titleTextView.text = currentItem.title
-        holder.bodyTextView.text = currentItem.body
+        holder.titleTextView.text = currentItem?.title
+        holder.bodyTextView.text = currentItem?.body
     }
 
-    override fun getItemCount() = noteList.size
 
     class ViewHolder(noteView: View) : RecyclerView.ViewHolder(noteView) {
         val titleTextView: TextView = noteView.note_title_item
         val bodyTextView: TextView = noteView.note_body_item
+    }
+
+    override fun getItemCount(): Int {
+        if (noteList == null) {
+            return 0
+        }
+        return noteList.size
     }
 }

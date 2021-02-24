@@ -15,35 +15,36 @@ class NewNoteFragment : Fragment(R.layout.new_note_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val PREFS = "shared_notes"
+        val sharedPref = context?.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         save_btn.setOnClickListener { view ->
             val title = title_note.text.toString()
             val body = body_note.text.toString()
 
-//            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
-//            //odczyt
-//            var notesJson = sharedPref.getString("NOTES", "{}")
-//            var gson = Gson()
-//            var notesOld = gson.fromJson(notesJson, Array<Note>::class.java).asList()
-//
-//            //modyfikacja
-//
-//            var maxId = 0;
-//            for (n in notesOld) {
-//                if (n.id > maxId) {
-//                    maxId = n.id
-//                }
-//            }
-//            val notesNew = arrayListOf<Note>()
-//            notesNew.addAll(notesOld)
-//            notesNew.add(Note(maxId + 1, title, body))
-//
-//            var jsonString = gson.toJson(notesNew)
-//
-//            //zapis
-//            with (sharedPref.edit()) {
-//                putString("NOTES", jsonString)
-//                apply()
-//            }
+            //odczyt
+            var notesJson = sharedPref?.getString("NOTES", "[]")
+            var gson = Gson()
+            var notesOld = gson.fromJson(notesJson, Array<Note>::class.java).asList()
+
+            //modyfikacja
+
+            var maxId = 0;
+            for (n in notesOld) {
+                if (n.id > maxId) {
+                    maxId = n.id
+                }
+            }
+            val notesNew = arrayListOf<Note>()
+            notesNew.addAll(notesOld)
+            notesNew.add(Note(maxId + 1, title, body))
+
+            var jsonString = gson.toJson(notesNew)
+
+            //zapis
+            with(sharedPref?.edit()) {
+                this?.putString("NOTES", jsonString)
+                this?.apply()
+            }
 
             //todo skorzystać z interactor
 
@@ -53,6 +54,4 @@ class NewNoteFragment : Fragment(R.layout.new_note_fragment) {
             imm.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
         }
     }
-
-
 }
