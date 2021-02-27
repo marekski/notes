@@ -29,10 +29,5 @@ class Adapter(private val noteList: List<Note>) : RecyclerView.Adapter<Adapter.V
         val bodyTextView: TextView = noteView.note_body_item
     }
 
-    override fun getItemCount(): Int {
-//        if (noteList == null) {
-//            return 0
-//        }
-        return noteList.size
-    }
+    override fun getItemCount() = noteList.size
 }

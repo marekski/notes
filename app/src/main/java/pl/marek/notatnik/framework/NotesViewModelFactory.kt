@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-object  NotesViewModelFactory : ViewModelProvider.Factory {
+object NotesViewModelFactory : ViewModelProvider.Factory {
     lateinit var application: Application
     lateinit var dependencies: Interactors
 
@@ -14,14 +14,14 @@ object  NotesViewModelFactory : ViewModelProvider.Factory {
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(MainViewModel::class.java.isAssignableFrom(modelClass)) {
+        if (MainViewModel::class.java.isAssignableFrom(modelClass)) {
             return modelClass.getConstructor(Application::class.java, Interactors::class.java)
                 .newInstance(
                     application,
-                    dependencies)
+                    dependencies
+                )
         } else {
             throw IllegalStateException("ViewModel must extend MainViewModel")
         }
     }
-
 }
